@@ -20,7 +20,10 @@
   --glass:color-mix(in srgb,var(--bg) 68%,transparent);
   --blur:blur(24px) saturate(1.7);
   --ease:cubic-bezier(.32,.72,0,1);
-  --hh:calc(60px + env(safe-area-inset-top,0px));
+  --si:env(safe-area-inset-top,0px);
+  --edge:.45;
+  --top:calc(var(--si) + var(--si) * var(--edge));
+  --hh:calc(60px + var(--top));
   --tb:calc(100px + env(safe-area-inset-bottom,0px));
   --side:0px;--gx:28px;
 }
@@ -48,7 +51,7 @@ button{cursor:pointer}
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.35s}
 
 /* header */
-header{position:fixed;inset:env(safe-area-inset-top,0px) 0 auto;height:60px;padding:0 16px;display:grid;grid-template-columns:1fr minmax(0,620px) 1fr;align-items:center;gap:12px;z-index:30;background:var(--glass);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border-bottom:1px solid var(--ln)}
+header{position:fixed;inset:var(--top) 0 auto;height:60px;padding:0 16px;display:grid;grid-template-columns:1fr minmax(0,620px) 1fr;align-items:center;gap:12px;z-index:30;background:var(--glass);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border-bottom:1px solid var(--ln)}
 .hl{display:flex;align-items:center;gap:6px;min-width:0}
 .hr{display:flex;justify-content:flex-end;gap:4px}
 .ib{width:42px;height:42px;border-radius:50%;border:0;background:none;display:grid;place-items:center;transition:background .2s,transform .2s var(--ease)}
@@ -75,7 +78,7 @@ body.open .side{transform:none;visibility:visible;transition-delay:0s}
 @media(min-width:901px) and (max-width:1279px){#scrim{display:block}body.open #scrim{opacity:1;pointer-events:auto}}
 main{margin:var(--hh) 0 0 var(--side);padding:0 var(--gx) 72px;min-width:0;min-height:calc(100vh - var(--hh));min-height:calc(100dvh - var(--hh));transition:margin .38s var(--ease)}
 #root{outline:0}
-#sb{position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:31;pointer-events:none}
+#sb{position:fixed;top:0;left:0;right:0;height:var(--top);background:var(--bg);z-index:31;pointer-events:none}
 #root.enter{animation:enter .32s var(--ease)}
 @keyframes enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes fade{from{opacity:0}to{opacity:1}}
