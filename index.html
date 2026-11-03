@@ -11,6 +11,7 @@
 <meta name="description" content="Il tuo percorso gratuito per imparare l’intelligenza artificiale.">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="icon" href="./favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="./icon-180.png">
 <title>AITube</title>
 <style>
@@ -57,10 +58,10 @@ header{position:fixed;inset:var(--top) 0 auto;height:60px;padding:0 16px;display
 .ib{width:42px;height:42px;border-radius:50%;border:0;background:none;display:grid;place-items:center;transition:background .2s,transform .2s var(--ease)}
 .ib:active{transform:scale(.92)}
 .logo{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:800;letter-spacing:-.04em}
-.lg{width:34px;height:24px;border-radius:8px;background:var(--ac);color:var(--on);display:grid;place-items:center}
+.lg{width:32px;height:32px;border-radius:9px;display:block;flex:none}
 .logo em{font-style:normal;color:var(--ac2)}
 #sf{position:relative;height:42px}
-#sf .ic{position:absolute;left:15px;top:11px;color:var(--mu);pointer-events:none}
+#sf .ic{position:absolute;left:15px;top:50%;width:20px;height:20px;margin-top:-10px;line-height:0;color:var(--mu);pointer-events:none}
 #sf input{width:100%;height:42px;border:1px solid var(--ln);background:var(--s1);border-radius:999px;padding:0 46px 0 46px;font-size:15px;outline:0;transition:border-color .2s,background .2s}
 #sf input:focus{border-color:var(--ac);background:var(--bg)}
 #sf input::placeholder,.sbox input::placeholder{color:var(--mu);opacity:1}
@@ -187,7 +188,7 @@ h1 small{font-size:14px;color:var(--mu);font-weight:450;letter-spacing:0}
 
 /* search view */
 .sbox{position:sticky;top:var(--hh);z-index:6;margin:0 calc(var(--gx) * -1) 12px;padding:12px var(--gx);background:var(--glass);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur)}
-.sbox .ic{position:absolute;left:calc(var(--gx) + 16px);top:25px;color:var(--mu);pointer-events:none}
+.sbox .ic{position:absolute;left:calc(var(--gx) + 16px);top:50%;width:20px;height:20px;margin-top:-10px;line-height:0;color:var(--mu);pointer-events:none}
 .sbox input{width:100%;height:48px;border:1px solid var(--ln);background:var(--s1);border-radius:999px;padding:0 48px;font-size:16px;outline:0;transition:border-color .2s}
 .sbox input:focus{border-color:var(--ac)}
 .sbox .clr{right:calc(var(--gx) + 6px);top:20px}
@@ -314,7 +315,7 @@ body.typing .tabs{opacity:0;pointer-events:none;transform:translate(-50%,24px)}
 <header>
  <div class="hl">
   <button class="ib" id="mb" type="button" title="Menu" aria-label="Menu" aria-controls="side" aria-expanded="true"></button>
-  <a class="logo" href="#/" aria-label="AITube, home"><span class="lg" id="lg"></span><b>AI<em>Tube</em></b></a>
+  <a class="logo" href="#/" aria-label="AITube, home"><img class="lg" id="lg" src="./logo.png" width="32" height="32" alt="" decoding="async"><b>AI<em>Tube</em></b></a>
  </div>
  <form id="sf" role="search"><span class="ic" id="sfi"></span><input id="q" type="search" placeholder="Cerca titoli, canali, argomenti" autocomplete="off" aria-label="Cerca"><kbd class="kb" aria-hidden="true">/</kbd><button class="clr" id="qc" type="button" aria-label="Cancella ricerca"></button></form>
  <div class="hr"></div>
@@ -17441,7 +17442,6 @@ function setTheme(v){
   if(document.startViewTransition&&!reduce.matches)document.startViewTransition(run);else run();
 }
 mqL.addEventListener&&mqL.addEventListener("change",()=>{if(!S.p.theme)applyTheme()});
-$("#lg").append(ic("play",16));
 $("#sfi").append(ic("search",20));
 $("#mb").append(ic("menu"));
 $("#qc").append(ic("x",18));
