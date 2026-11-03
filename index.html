@@ -48,7 +48,7 @@ button{cursor:pointer}
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.35s}
 
 /* header */
-header{position:fixed;inset:0 0 auto;height:var(--hh);padding:env(safe-area-inset-top,0px) 16px 0;display:grid;grid-template-columns:1fr minmax(0,620px) 1fr;align-items:center;gap:12px;z-index:30;background:var(--glass);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border-bottom:1px solid var(--ln)}
+header{position:fixed;inset:env(safe-area-inset-top,0px) 0 auto;height:60px;padding:0 16px;display:grid;grid-template-columns:1fr minmax(0,620px) 1fr;align-items:center;gap:12px;z-index:30;background:var(--glass);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border-bottom:1px solid var(--ln)}
 .hl{display:flex;align-items:center;gap:6px;min-width:0}
 .hr{display:flex;justify-content:flex-end;gap:4px}
 .ib{width:42px;height:42px;border-radius:50%;border:0;background:none;display:grid;place-items:center;transition:background .2s,transform .2s var(--ease)}
@@ -73,8 +73,9 @@ input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-sea
 body.open .side{transform:none;visibility:visible;transition-delay:0s}
 #scrim{display:none;position:fixed;inset:var(--hh) 0 0 0;z-index:21;background:color-mix(in srgb,var(--bg) 45%,transparent);-webkit-backdrop-filter:blur(10px) saturate(1.4);backdrop-filter:blur(10px) saturate(1.4);opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
 @media(min-width:901px) and (max-width:1279px){#scrim{display:block}body.open #scrim{opacity:1;pointer-events:auto}}
-main{margin:var(--hh) 0 0 var(--side);padding:0 var(--gx) 72px;min-width:0;transition:margin .38s var(--ease)}
-#root{max-width:2000px;margin:0 auto;outline:0}
+main{margin:var(--hh) 0 0 var(--side);padding:0 var(--gx) 72px;min-width:0;min-height:calc(100vh - var(--hh));min-height:calc(100dvh - var(--hh));transition:margin .38s var(--ease)}
+#root{outline:0}
+#sb{position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:31;pointer-events:none}
 #root.enter{animation:enter .32s var(--ease)}
 @keyframes enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes fade{from{opacity:0}to{opacity:1}}
@@ -259,6 +260,8 @@ textarea::placeholder{color:var(--mu);opacity:1}
 .tabs a.on{color:var(--ac2)}
 .ind{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px) / 4);border-radius:26px;background:color-mix(in srgb,var(--ac) 18%,transparent);transform:translateX(calc(var(--i,0) * 100%));transition:transform .45s var(--ease),opacity .25s}
 .tabs.none .ind{opacity:0}
+body.typing .tabs{opacity:0;pointer-events:none;transform:translate(-50%,24px)}
+.tabs{transition:opacity .25s var(--ease),transform .4s var(--ease)}
 .bdg{position:absolute;top:5px;left:calc(50% + 6px);min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--ac);color:var(--on);font:700 10.5px/17px ui-sans-serif,system-ui,sans-serif;text-align:center;font-style:normal}
 .bdg:empty{display:none}
 
@@ -304,13 +307,14 @@ textarea::placeholder{color:var(--mu);opacity:1}
 </head>
 <body>
 <button class="skip" id="skip" type="button">Vai ai contenuti</button>
+<div id="sb" aria-hidden="true"></div>
 <header>
  <div class="hl">
   <button class="ib" id="mb" type="button" title="Menu" aria-label="Menu" aria-controls="side" aria-expanded="true"></button>
   <a class="logo" href="#/" aria-label="AITube, home"><span class="lg" id="lg"></span><b>AI<em>Tube</em></b></a>
  </div>
  <form id="sf" role="search"><span class="ic" id="sfi"></span><input id="q" type="search" placeholder="Cerca titoli, canali, argomenti" autocomplete="off" aria-label="Cerca"><kbd class="kb" aria-hidden="true">/</kbd><button class="clr" id="qc" type="button" aria-label="Cancella ricerca"></button></form>
- <div class="hr"><button class="ib" id="tg" type="button"></button></div>
+ <div class="hr"></div>
 </header>
 <div id="scrim"></div>
 <nav class="side" id="side" aria-label="Menu principale"></nav>
@@ -17427,8 +17431,6 @@ function applyTheme(){
   const t=eff();
   document.documentElement.dataset.theme=t;
   const m=document.querySelector("meta[name=theme-color]");if(m)m.content=t==="light"?"#fffaf4":"#14100d";
-  const b=$("#tg");
-  if(b){b.replaceChildren(ic(t==="light"?"moon":"sun",22));b.setAttribute("aria-label",t==="light"?"Passa al tema scuro":"Passa al tema chiaro");b.title=b.getAttribute("aria-label")}
   document.querySelectorAll(".sc button[data-v]").forEach(x=>x.setAttribute("aria-pressed",String((S.p.theme||"auto")===x.dataset.v)));
 }
 function setTheme(v){
@@ -17436,7 +17438,6 @@ function setTheme(v){
   if(document.startViewTransition&&!reduce.matches)document.startViewTransition(run);else run();
 }
 mqL.addEventListener&&mqL.addEventListener("change",()=>{if(!S.p.theme)applyTheme()});
-$("#tg").onclick=()=>setTheme(eff()==="light"?"dark":"light");
 $("#lg").append(ic("play",16));
 $("#sfi").append(ic("search",20));
 $("#mb").append(ic("menu"));
@@ -17613,7 +17614,6 @@ function search(){
   inp.oninput=()=>{setQ(inp.value);$("#q").value=inp.value;$("#sf").classList.toggle("has",!!inp.value);box.classList.toggle("has",!!inp.value);dd()};
   root.replaceChildren(box,out);
   draw();
-  if(innerWidth<=900&&!q)inp.focus();
 }
 function lib(kind){
   const T={later:["clock","Guarda più tardi"],liked:["up","Video piaciuti"],disliked:["up","Non piaciuti"],history:["hist","Cronologia"]};
@@ -17704,6 +17704,12 @@ function watch(id){
   if(cur&&innerWidth>1100&&!S.p.cin)rail.scrollTop=Math.max(0,cur.offsetTop-12);
 }
 
+/* ---------- tastiera: la barra a schede non si sposta ---------- */
+const isTxt=el=>el&&/^(INPUT|TEXTAREA)$/.test(el.tagName);
+addEventListener("focusin",e=>{if(isTxt(e.target)&&innerWidth<=900)document.body.classList.add("typing")});
+addEventListener("focusout",()=>setTimeout(()=>{if(!isTxt(document.activeElement))document.body.classList.remove("typing")},60));
+$("#tabs").addEventListener("pointerdown",()=>{if(isTxt(document.activeElement))document.activeElement.blur()});
+
 /* ---------- instradamento ---------- */
 let viaLink=false,vt,lastY=0,pos={},raf=0;
 addEventListener("click",e=>{
@@ -17712,7 +17718,7 @@ addEventListener("click",e=>{
 },true);
 function stuck(){
   const c=$(".chips");
-  if(c)c.classList.toggle("stuck",c.getBoundingClientRect().top<=$("header").offsetHeight+1);
+  if(c)c.classList.toggle("stuck",c.getBoundingClientRect().top<=$("header").getBoundingClientRect().bottom+1);
 }
 addEventListener("scroll",()=>{lastY=scrollY;if(!raf)raf=requestAnimationFrame(()=>{raf=0;stuck()})},{passive:true});
 function enter(){root.classList.remove("enter");void root.offsetWidth;root.classList.add("enter")}
@@ -17735,6 +17741,8 @@ function route(keep){
     else if(on)ci.scrollLeft=on.offsetLeft-(ci.clientWidth-on.offsetWidth)/2;
   }
   if(!keep){
+    const ae=document.activeElement;
+    if(ae&&ae!==document.body&&ae.id!=="q"&&ae.blur&&/^(INPUT|TEXTAREA)$/.test(ae.tagName))ae.blur();
     enter();
     const y=(!viaLink&&pos[hk()])||0;
     scrollTo(0,y);lastY=y;viaLink=false;
