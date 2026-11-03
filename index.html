@@ -61,16 +61,14 @@ header{position:fixed;inset:var(--top) 0 auto;height:60px;padding:0 16px;display
 .lg{width:32px;height:32px;border-radius:9px;display:block;flex:none}
 .logo em{font-style:normal;color:var(--ac2)}
 #sf{position:relative;height:42px}
-#sf .ic{position:absolute;left:15px;top:50%;width:20px;height:20px;margin-top:-10px;line-height:0;color:var(--mu);pointer-events:none}
-#sf input{width:100%;height:42px;border:1px solid var(--ln);background:var(--s1);border-radius:999px;padding:0 46px 0 46px;font-size:15px;outline:0;transition:border-color .2s,background .2s}
+#sf input{width:100%;height:42px;border:1px solid var(--ln);background:var(--s1);border-radius:999px;padding:0 46px 0 20px;font-size:15px;line-height:normal;outline:0;transition:border-color .2s,background .2s}
 #sf input:focus{border-color:var(--ac);background:var(--bg)}
 #sf input::placeholder,.sbox input::placeholder{color:var(--mu);opacity:1}
 input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-search-decoration{-webkit-appearance:none;appearance:none}
-.kb{position:absolute;right:12px;top:10px;min-width:22px;height:22px;padding:0 6px;border:1px solid var(--ln2);border-radius:6px;color:var(--mu);font:600 12px/20px ui-monospace,SFMono-Regular,Menlo,monospace;text-align:center;pointer-events:none}
 .clr{position:absolute;right:6px;top:5px;width:32px;height:32px;border:0;border-radius:50%;background:none;color:var(--mu);display:none;place-items:center;transition:background .2s}
-#sf.has .kb{display:none}
+#sf .ic{position:absolute;right:15px;top:50%;width:20px;height:20px;margin-top:-10px;line-height:0;color:var(--mu);pointer-events:none}
+#sf.has .ic{display:none}
 #sf.has .clr{display:grid}
-@media(hover:none){.kb{display:none}}
 
 /* sidebar */
 .side{position:fixed;top:var(--hh);bottom:0;left:0;width:264px;overflow:auto;overscroll-behavior:contain;padding:12px 12px 32px;z-index:22;background:var(--glass);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border-right:1px solid var(--ln);transform:translateX(-100%);visibility:hidden;transition:transform .38s var(--ease),visibility 0s .38s;scrollbar-width:thin}
@@ -188,8 +186,7 @@ h1 small{font-size:14px;color:var(--mu);font-weight:450;letter-spacing:0}
 
 /* search view */
 .sbox{position:sticky;top:var(--hh);z-index:6;margin:0 calc(var(--gx) * -1) 12px;padding:12px var(--gx);background:var(--glass);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur)}
-.sbox .ic{position:absolute;left:calc(var(--gx) + 16px);top:50%;width:20px;height:20px;margin-top:-10px;line-height:0;color:var(--mu);pointer-events:none}
-.sbox input{width:100%;height:48px;border:1px solid var(--ln);background:var(--s1);border-radius:999px;padding:0 48px;font-size:16px;outline:0;transition:border-color .2s}
+.sbox input{width:100%;height:48px;border:1px solid var(--ln);background:var(--s1);border-radius:999px;padding:0 48px 0 22px;font-size:16px;line-height:normal;outline:0;transition:border-color .2s}
 .sbox input:focus{border-color:var(--ac)}
 .sbox .clr{right:calc(var(--gx) + 6px);top:20px}
 .sbox.has .clr{display:grid}
@@ -317,7 +314,7 @@ body.typing .tabs{opacity:0;pointer-events:none;transform:translate(-50%,24px)}
   <button class="ib" id="mb" type="button" title="Menu" aria-label="Menu" aria-controls="side" aria-expanded="true"></button>
   <a class="logo" href="#/" aria-label="AITube, home"><img class="lg" id="lg" src="./logo.png" width="32" height="32" alt="" decoding="async"><b>AI<em>Tube</em></b></a>
  </div>
- <form id="sf" role="search"><span class="ic" id="sfi"></span><input id="q" type="search" placeholder="Cerca titoli, canali, argomenti" autocomplete="off" aria-label="Cerca"><kbd class="kb" aria-hidden="true">/</kbd><button class="clr" id="qc" type="button" aria-label="Cancella ricerca"></button></form>
+ <form id="sf" role="search"><input id="q" type="search" placeholder="Cerca titoli, canali, argomenti" autocomplete="off" aria-label="Cerca"><span class="ic" id="sfi"></span><button class="clr" id="qc" type="button" aria-label="Cancella ricerca"></button></form>
  <div class="hr"></div>
 </header>
 <div id="scrim"></div>
@@ -17607,7 +17604,7 @@ function home(kind,arg){
 function search(){
   const inp=h("input",{type:"search",placeholder:"Cerca titoli, canali, argomenti",autocomplete:"off","aria-label":"Cerca",value:q});
   const clr=h("button",{type:"button",class:"clr","aria-label":"Cancella ricerca",on:{click:()=>{inp.value="";inp.dispatchEvent(new Event("input"));inp.focus()}}},ic("x",18));
-  const box=h("div",{class:"sbox"+(q?" has":"")},ic("search",20),inp,clr),out=h("div");
+  const box=h("div",{class:"sbox"+(q?" has":"")},inp,clr),out=h("div");
   const draw=()=>{
     if(!q){out.replaceChildren(h("p",{class:"mu"},"Scegli un argomento o scrivi per cercare."),h("div",{class:"tpc"},...Object.keys(TOPICS).filter(t=>V.some(v=>v.topic===t&&vis(v))).map(t=>h("a",{class:"pill",href:"#/t/"+t},TOPICS[t]))));return}
     const list=find(),g=h("div",{class:"grid"});list.forEach(v=>g.append(card(v)));
